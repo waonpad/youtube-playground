@@ -22,7 +22,8 @@ jobs:
       # 依存関係をインストール
       - name: Install dependencies
         # 開発用パッケージは不要
-        run: bun install --production
+        # prepareコマンドを実行しない
+        run: bun install --production --ignore-scripts
 
       # スクリプトを実行
       - name: Run script
