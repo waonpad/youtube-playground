@@ -1,0 +1,33 @@
+name: like all videos in playlist
+
+on:
+  workflow_dispatch:
+
+jobs:
+  like_all_videos_in_playlist:
+    runs-on: ubuntu-latest
+    # リポジトリのオーナーしか実行できないようにする
+    if: github.triggering_actor == github.repository_owner
+    # main という環境名を指定
+    environment: main
+    steps:
+      # mainブランチの内容をコピー
+      - name: Checkout main
+        uses: actions/checkout@v4
+
+      # Bunをインストール
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      # 依存関係をインストール
+      - name: Install dependencies
+        # 開発用パッケージは不要
+        run: bun install --production
+
+      # スクリプトを実行
+      - name: Run script
+        env:
+          YOUTUBE_DATA_API_REFRESH_TOKEN: ${{ secrets.YOUTUBE_DATA_API_REFRESH_TOKEN }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+        run: bun run scripts/like-all-videos-in-playlist.ts ${{ vars.LIKE_ALL_VIDEOS_IN_PLAYLIST_TARGET_ID }} --no-save

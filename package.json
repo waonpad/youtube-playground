@@ -1,0 +1,31 @@
+{
+  "name": "youtube-playground",
+  "module": "index.ts",
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/bun": "latest",
+    "@types/server-destroy": "^1.0.4",
+    "lefthook": "^1.8.2",
+    "open": "^10.1.0",
+    "server-destroy": "^1.0.1",
+    "vitest": "^2.1.4"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "prepare": "lefthook install",
+    "setup": "bun install && cp -n .env.example .env; exit 0",
+    "fmt": "biome format --write .",
+    "lnt": "biome lint --write .",
+    "che": "biome check --write .",
+    "test": "echo 'vitest run してください'",
+    "test:w": "vitest watch --silent",
+    "test:ci": "vitest run --silent",
+    "build": "tsc -p tsconfig.build.json"
+  },
+  "type": "module",
+  "dependencies": {
+    "googleapis": "^144.0.0"
+  }
+}
