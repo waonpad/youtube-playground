@@ -112,8 +112,10 @@ const main = async () => {
       return JSON.parse(readFileSync(filepath, "utf-8")) as youtube_v3.Schema$PlaylistItem[];
     })();
 
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
-    const videoIds = pItems.map((item) => item.contentDetails?.videoId!);
+    const videoIds = pItems
+      .filter((item) => item.contentDetails?.videoPublishedAt)
+      // biome-ignore lint/style/noNonNullAssertion: <explanation>
+      .map((item) => item.contentDetails?.videoId!);
 
     await likeAllVideos(youtube, { videoIds });
   }
