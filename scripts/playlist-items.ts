@@ -5,7 +5,7 @@ import type { Youtube } from "@/youtube";
  */
 export const getAllPlaylistItems = async (
   youtube: Youtube,
-  { playlistId, part }: { playlistId: string; part?: string[] },
+  { playlistId, part }: { playlistId: string; part?: ("snippet" | "contentDetails" | "id" | "status")[] },
 ) => {
   const items = [];
 
