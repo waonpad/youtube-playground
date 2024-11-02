@@ -4,9 +4,18 @@ import type { youtube_v3 } from "googleapis";
 import { getAllPlaylistItems } from "./playlist-items";
 import { rateAllVideos } from "./rate";
 
+// TODO: コマンドライン引数をいい感じにパースする
 const main = async () => {
+  // コマンドライン引数で指定した評価を行う
+  const rating = process.argv[2];
   // コマンドライン引数で指定したプレイリストの動画を全て高評価にする
-  const playlistIds = process.argv[2].split(",");
+  const playlistIds = process.argv[3].split(",");
+
+  if (rating !== "like" && rating !== "none" && rating !== "dislike") {
+    console.error("評価はlike, none, dislikeのいずれかを指定してください");
+
+    process.exit(1);
+  }
 
   const options = {
     // オプションで--cleanを指定すると、既存のデータを削除して再取得する
@@ -62,7 +71,7 @@ const main = async () => {
     console.log("削除または非公開の動画数: ", pItems.length - videoIds.length);
     console.log("評価可能な動画数: ", videoIds.length);
 
-    const { newRatedVideoIds } = await rateAllVideos(youtube, { videoIds, rating: "like" });
+    const { newRatedVideoIds } = await rateAllVideos(youtube, { videoIds, rating });
 
     console.log("新たに評価した動画数: ", newRatedVideoIds.length);
   }
