@@ -1,6 +1,5 @@
 {
   "name": "youtube-playground",
-  "module": "index.ts",
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@types/bun": "latest",

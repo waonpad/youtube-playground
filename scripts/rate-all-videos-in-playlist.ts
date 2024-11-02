@@ -1,11 +1,10 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";
+import { getAllPlaylistItems } from "@/playlist-items";
+import { rateAllVideos } from "@/rate";
 import { setupYoutube } from "@/youtube";
 import type { youtube_v3 } from "googleapis";
-import { getAllPlaylistItems } from "./playlist-items";
-import { rateAllVideos } from "./rate";
 
-// TODO: コマンドライン引数をいい感じにパースする
 const main = async () => {
   const args = (() => {
     const { values } = parseArgs({

@@ -1,5 +1,5 @@
-import type { Youtube } from "@/youtube";
 import type { youtube_v3 } from "googleapis";
+import type { Youtube } from "./youtube";
 
 /**
  * @see [Videos: rate  |  YouTube Data API  |  Google for Developers](https://developers.google.com/youtube/v3/docs/videos/rate?hl=ja)

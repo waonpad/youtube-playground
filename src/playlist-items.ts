@@ -1,4 +1,4 @@
-import type { Youtube } from "@/youtube";
+import type { Youtube } from "./youtube";
 
 /**
  * @see [PlaylistItems: list  |  YouTube Data API  |  Google for Developers](https://developers.google.com/youtube/v3/docs/playlistItems/list?hl=ja)
