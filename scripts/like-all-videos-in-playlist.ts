@@ -1,67 +1,8 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { type Youtube, setupYoutube } from "@/youtube";
+import { setupYoutube } from "@/youtube";
 import type { youtube_v3 } from "googleapis";
-
-export const getAllPlaylistItems = async (youtube: Youtube, { playlistId }: { playlistId: string }) => {
-  const items = [];
-
-  let pageToken = "";
-
-  for (;;) {
-    const pItems = await youtube.playlistItems.list({
-      part: ["snippet", "contentDetails"],
-      playlistId,
-      maxResults: 50,
-      pageToken,
-    });
-
-    items.push(...(pItems.data.items || []));
-
-    if (pItems.data.nextPageToken) {
-      pageToken = pItems.data.nextPageToken;
-    } else {
-      break;
-    }
-  }
-
-  return items;
-};
-
-const likeAllVideos = async (youtube: Youtube, { videoIds }: { videoIds: string[] }) => {
-  console.log("全て高評価にする対象の動画数: ", videoIds.length);
-
-  // idは一度に50個までしか指定できないので、50個ずつに分割して取得する
-  const currentRates: youtube_v3.Schema$VideoGetRatingResponse["items"] = [];
-
-  for (let i = 0; i < videoIds.length; i += 50) {
-    const rates = await youtube.videos.getRating({
-      id: videoIds.slice(i, i + 50),
-    });
-
-    const items = rates.data.items || [];
-
-    currentRates.push(...items);
-  }
-
-  const notLikedVideoIds = currentRates
-    .filter((rate) => rate.rating !== "like")
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
-    .map((rate) => rate.videoId!);
-
-  console.log("未高評価の動画ID: ", notLikedVideoIds);
-  console.log("未高評価の動画数: ", notLikedVideoIds.length);
-
-  if (notLikedVideoIds.length === 0) {
-    return;
-  }
-
-  for (const id of notLikedVideoIds) {
-    await youtube.videos.rate({
-      id,
-      rating: "like",
-    });
-  }
-};
+import { getAllPlaylistItems } from "./playlist-items";
+import { rateAllVideos } from "./rate";
 
 const main = async () => {
   // コマンドライン引数で指定したプレイリストの動画を全て高評価にする
@@ -88,7 +29,7 @@ const main = async () => {
       if (!existsSync(filepath) || options.clean) {
         console.log("動画をAPIから取得します");
 
-        const res = await getAllPlaylistItems(youtube, { playlistId });
+        const res = await getAllPlaylistItems(youtube, { playlistId, part: ["contentDetails"] });
 
         if (options.noSave) {
           return res;
@@ -117,7 +58,13 @@ const main = async () => {
       // biome-ignore lint/style/noNonNullAssertion: <explanation>
       .map((item) => item.contentDetails?.videoId!);
 
-    await likeAllVideos(youtube, { videoIds });
+    console.log("プレイリスト内の動画数: ", pItems.length);
+    console.log("削除または非公開の動画数: ", pItems.length - videoIds.length);
+    console.log("評価可能な動画数: ", videoIds.length);
+
+    const { newRatedVideoIds } = await rateAllVideos(youtube, { videoIds, rating: "like" });
+
+    console.log("新たに評価した動画数: ", newRatedVideoIds.length);
   }
 };
 

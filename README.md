@@ -31,3 +31,12 @@ OAuth consent screenのPublishing statusをProductionにするとリフレッシ
 ```env
 YOUTUBE_DATA_API_REFRESH_TOKEN=
 ```
+
+> 更新トークンは、次のいずれかの理由で付与後に機能しなくなる場合があります。
+> - ユーザーがアプリのアクセスを取り消しました
+> - リフレッシュトークンが6か月間使用されていない
+> - ユーザーがパスワードを変更し、リフレッシュトークンにGmailスコープが含まれている
+> - ユーザー アカウントがライブ更新トークンの最大数を超えました
+> - アプリケーションのステータスが「テスト中」であり、同意画面が外部ユーザータイプ用に設定されているため、トークンは 7 日後に期限切れになります。
+>
+> [googleapis/google-api-nodejs-client](https://github.com/googleapis/google-api-nodejs-client?tab=readme-ov-file#handling-refresh-tokens)
