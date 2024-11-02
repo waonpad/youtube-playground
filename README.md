@@ -26,7 +26,7 @@ GOOGLE_CLIENT_SECRET=
 スクリプトを実行するとブラウザが開いて、認証を行うとアクセストークンが出力される
 
 ```bash
-bun run scripts/auth-on-browser.ts
+bun run scripts/auth-on-browser.ts youtube
 ```
 
 表示されたリフレッシュトークンを`.env`に設定する
