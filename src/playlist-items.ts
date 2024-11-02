@@ -1,10 +1,10 @@
-import type { Youtube } from "./youtube";
+import type { youtube_v3 } from "googleapis";
 
 /**
  * @see [PlaylistItems: list  |  YouTube Data API  |  Google for Developers](https://developers.google.com/youtube/v3/docs/playlistItems/list?hl=ja)
  */
 export const getAllPlaylistItems = async (
-  youtube: Youtube,
+  youtube: youtube_v3.Youtube,
   { playlistId, part }: { playlistId: string; part?: ("snippet" | "contentDetails" | "id" | "status")[] },
 ) => {
   const items = [];
