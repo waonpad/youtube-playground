@@ -18,7 +18,7 @@
     "fmt": "biome format --write .",
     "lnt": "biome lint --write .",
     "che": "biome check --write .",
-    "test": "echo 'vitest run してください'",
+    "test": "vitest run",
     "test:w": "vitest watch --silent",
     "test:ci": "vitest run --silent",
     "build": "tsc -p tsconfig.build.json"
