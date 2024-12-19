@@ -38,6 +38,18 @@ const cacheSong = (song: SongFull) => {
   writeFileSync(filepath, JSON.stringify(cachedSongs, null, 2));
 };
 
+const getSong = async (videoId: string, { ytmusic }: { ytmusic: YTMusic }) => {
+  const cachedSongs = getCachedSongs();
+  const cached = cachedSongs.find((s) => s.videoId === videoId);
+  if (cached) return cached;
+
+  const song = await ytmusic.getSong(videoId);
+
+  cacheSong(song);
+
+  return song;
+};
+
 const artistFilePath = `${dir}/artists.json`;
 
 const getCachedArtists = () => {
@@ -66,72 +78,59 @@ const cacheArtist = (artist: ArtistFull) => {
   writeFileSync(artistFilePath, JSON.stringify(cachedArtists, null, 2));
 };
 
+const getArtist = async (artistId: string, { ytmusic }: { ytmusic: YTMusic }) => {
+  const cachedArtists = getCachedArtists();
+  const cached = cachedArtists.find((a) => a.artistId === artistId);
+  if (cached) return cached;
+
+  const artist = await ytmusic.getArtist(artistId);
+
+  cacheArtist(artist);
+
+  return artist;
+};
+
 export const isOfficialVideo = async (
   video: youtube_v3.Schema$PlaylistItem,
   { ytmusic }: { ytmusic: YTMusic },
 ): Promise<boolean> => {
   const channelTitle = video.snippet?.videoOwnerChannelTitle;
-
   if (channelTitle && isOfficialChannelTitle(channelTitle)) {
-    // console.log("公式のチャンネル名: ", channelTitle);
     return true;
   }
 
   const title = video.snippet?.title;
-
   if (title && isOfficialVideoTitle(title)) {
-    // console.log("公式の動画タイトル: ", title);
     return true;
   }
 
   const videoId = video.contentDetails?.videoId;
-
   const song = await (async () => {
     if (videoId) {
-      const cachedSongs = getCachedSongs();
-      const cached = cachedSongs.find((s) => s.videoId === videoId);
-      if (cached) return cached;
-
-      const song = await ytmusic.getSong(videoId);
-
-      cacheSong(song);
-
-      return song;
+      return getSong(videoId, { ytmusic });
     }
 
     return null;
   })();
 
+  const channelId = video.snippet?.videoOwnerChannelId;
   const artist = await (async () => {
-    if (song && video.snippet?.videoOwnerChannelId) {
-      const cachedArtists = getCachedArtists();
-      const cached = cachedArtists.find((a) => a.artistId === song.artist?.artistId);
-      if (cached) return cached;
-
-      const artist = await ytmusic.getArtist(video.snippet?.videoOwnerChannelId);
-
-      cacheArtist(artist);
-
-      return artist;
+    if (song && channelId) {
+      return getArtist(channelId, { ytmusic });
     }
 
     return null;
   })();
 
   const topAlbumTumbnails = artist?.topAlbums?.flatMap((album) => album.thumbnails);
-  const topSingleTumbnails = artist?.topSingles?.flatMap((single) => single.thumbnails);
-
   if (topAlbumTumbnails && hasOfficialSongThumbnail(topAlbumTumbnails)) {
-    // console.log("公式のアルバムサムネイルがありました: ", channelTitle);
     return true;
   }
 
+  const topSingleTumbnails = artist?.topSingles?.flatMap((single) => single.thumbnails);
   if (topSingleTumbnails && hasOfficialSongThumbnail(topSingleTumbnails)) {
-    // console.log("公式のシングルサムネイルがありました: ", channelTitle);
     return true;
   }
-
-  console.log("公式の動画ではないかも: ", title, channelTitle);
 
   return false;
 };
@@ -161,4 +160,17 @@ export const isOfficialChannelTitle = (channelTitle: string): boolean => {
 
 export const hasOfficialSongThumbnail = (thumbnails: { width: number; height: number }[]): boolean => {
   return thumbnails.some((thumbnail) => thumbnail.width === thumbnail.height);
+};
+
+/**
+ * 実際にはプレイリストを作成せず、一時的なプレイリストのURLを生成する
+ *
+ * @param videoIds 動画IDの配列(50個までしか匿名プレイリストに含められない)
+ */
+export const computeAnonymousPlaylistUrl = (videoIds: string[]): string => {
+  if (videoIds.length > 50) {
+    throw new Error("YouTubeの匿名プレイリストには50個までしか動画を追加できません");
+  }
+
+  return `https://www.youtube.com/watch_videos?video_ids=${videoIds.join(",")}`;
 };
