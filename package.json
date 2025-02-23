@@ -2,15 +2,13 @@
   "name": "youtube-playground",
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@types/bun": "latest",
+    "@types/bun": "^1.2.3",
     "@types/server-destroy": "^1.0.4",
-    "lefthook": "^1.8.2",
+    "lefthook": "^1.11.0",
     "open": "^10.1.0",
     "server-destroy": "^1.0.1",
-    "vitest": "^2.1.4"
-  },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.6"
   },
   "scripts": {
     "prepare": "lefthook install",
@@ -26,6 +24,6 @@
   "type": "module",
   "dependencies": {
     "googleapis": "^144.0.0",
-    "ytmusic-api": "^5.2.2"
+    "ytmusic-api": "^5.3.0"
   }
 }
