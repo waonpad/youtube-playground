@@ -2,6 +2,9 @@ name: like all videos in playlist
 
 on:
   workflow_dispatch:
+  schedule:
+    # 毎月日本時間1日の24時に実行
+    - cron: '0 15 1 * *'
 
 jobs:
   like_all_videos_in_playlist:
