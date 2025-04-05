@@ -3,9 +3,6 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import type { ArtistFull, SongFull } from "ytmusic-api";
 import type YTMusic from "ytmusic-api";
 
-// データの取得処理とか
-// TODO: 適当に書いてるので整理する
-
 const dir = "data/songs";
 const filepath = `${dir}/songs.json`;
 const artistFilePath = `${dir}/artists.json`;
