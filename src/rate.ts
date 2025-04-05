@@ -1,7 +1,9 @@
 import { Octokit } from "@octokit/rest";
 import type { youtube_v3 } from "googleapis";
 import { Common } from "googleapis";
-import { computeAnonymousPlaylistUrl, getWorkflowRunUrl, isRunOnGitHubActions, splitArray } from "./utils";
+import { computeAnonymousPlaylistUrl } from "./playlist";
+import { splitArray } from "./utils/array";
+import { getWorkflowRunUrl, isRunOnGitHubActions } from "./utils/github";
 
 /**
  * @see [Videos: rate  |  YouTube Data API  |  Google for Developers](https://developers.google.com/youtube/v3/docs/videos/rate?hl=ja)

@@ -1,5 +1,7 @@
 import { readFileSync } from "node:fs";
-import { computeAnonymousPlaylistUrl, isOfficialVideo, splitArray } from "@/utils";
+import { isOfficialVideo } from "@/official";
+import { computeAnonymousPlaylistUrl } from "@/playlist";
+import { splitArray } from "@/utils/array";
 import type { youtube_v3 } from "googleapis";
 import YTMusic from "ytmusic-api";
 
