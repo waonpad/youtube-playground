@@ -61,6 +61,7 @@ export const rateAllVideos = async (
       }
     }
   } finally {
+    // TODO: ベタ書きすぎるので整理したいが、まだ困ってないので後回し
     if (ratingDisabledVideoIds.length) {
       console.log("評価が無効な動画ID: ", ratingDisabledVideoIds);
 
