@@ -27,7 +27,7 @@ export const rateAllVideos = async (
     // biome-ignore lint/style/noNonNullAssertion: <explanation>
     .map((rate) => rate.videoId!);
 
-  const ratinsDisabledVideoIds: string[] = [];
+  const ratingDisabledVideoIds: string[] = [];
 
   try {
     for (const id of notRatedVideoIds) {
@@ -49,7 +49,7 @@ export const rateAllVideos = async (
 
           // 評価が無効な動画の場合、リストに追加してそのまま継続
           if (isvideoRatingDisabled) {
-            ratinsDisabledVideoIds.push(id);
+            ratingDisabledVideoIds.push(id);
             continue;
           }
         }
@@ -59,9 +59,9 @@ export const rateAllVideos = async (
       }
     }
   } finally {
-    if (ratinsDisabledVideoIds.length) {
+    if (ratingDisabledVideoIds.length) {
       // TODO: どこかに通知
-      console.log("評価が無効な動画ID: ", ratinsDisabledVideoIds);
+      console.log("評価が無効な動画ID: ", ratingDisabledVideoIds);
     }
   }
 
