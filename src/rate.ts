@@ -1,5 +1,7 @@
+import { Octokit } from "@octokit/rest";
 import type { youtube_v3 } from "googleapis";
 import { Common } from "googleapis";
+import { computeAnonymousPlaylistUrl, getWorkflowRunUrl, isRunOnGitHubActions, splitArray } from "./utils";
 
 /**
  * @see [Videos: rate  |  YouTube Data API  |  Google for Developers](https://developers.google.com/youtube/v3/docs/videos/rate?hl=ja)
@@ -60,8 +62,29 @@ export const rateAllVideos = async (
     }
   } finally {
     if (ratingDisabledVideoIds.length) {
-      // TODO: どこかに通知
       console.log("評価が無効な動画ID: ", ratingDisabledVideoIds);
+
+      const ratingDisabledVideoPlaylistUrls = splitArray(ratingDisabledVideoIds, 50).map((ids) =>
+        computeAnonymousPlaylistUrl(ids),
+      );
+
+      console.log("評価が無効な動画を集めた一時的なプレイリストのURL", ratingDisabledVideoPlaylistUrls.join("\n\n"));
+
+      // GitHub Actions上で実行されている場合は、GitHub Issuesに通知する
+      if (isRunOnGitHubActions()) {
+        const octokit = new Octokit({
+          auth: process.env.GITHUB_TOKEN,
+        });
+
+        octokit.rest.issues.create({
+          // biome-ignore lint/style/noNonNullAssertion: <explanation>
+          owner: process.env.GITHUB_REPOSITORY!.split("/")[0],
+          // biome-ignore lint/style/noNonNullAssertion: <explanation>
+          repo: process.env.GITHUB_REPOSITORY!.split("/")[1],
+          title: "手動での評価が必要な動画が検出されました",
+          body: `実行URL: ${getWorkflowRunUrl()}\n\n評価が無効な動画ID: ${ratingDisabledVideoIds.join(", ")}\n\n以下のリンクから手動で評価を行ってください。\n\n${ratingDisabledVideoPlaylistUrls.join("\n")}`,
+        });
+      }
     }
   }
 

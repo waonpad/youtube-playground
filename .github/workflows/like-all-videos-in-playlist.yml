@@ -34,4 +34,5 @@ jobs:
           YOUTUBE_DATA_API_REFRESH_TOKEN: ${{ secrets.YOUTUBE_DATA_API_REFRESH_TOKEN }}
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: bun run scripts/rate-all-videos-in-playlist.ts --no-save --rating like --ids ${{ vars.LIKE_ALL_VIDEOS_IN_PLAYLIST_TARGET_ID }}

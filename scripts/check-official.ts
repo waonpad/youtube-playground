@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { computeAnonymousPlaylistUrl, isOfficialVideo } from "@/utils";
+import { computeAnonymousPlaylistUrl, isOfficialVideo, splitArray } from "@/utils";
 import type { youtube_v3 } from "googleapis";
 import YTMusic from "ytmusic-api";
 
@@ -39,19 +39,7 @@ const main = async () => {
 
   const unofficialVideoPlaylistUrls = splitArray(unofficialVideoIds, 50).map((ids) => computeAnonymousPlaylistUrl(ids));
 
-  console.log("非公式動画を集めた一時的なプレイリストのURL \n", unofficialVideoPlaylistUrls.join("\n\n"));
+  console.log("非公式動画を集めた一時的なプレイリストのURL", unofficialVideoPlaylistUrls.join("\n\n"));
 };
 
 main();
-
-const splitArray = <T>(arr: T[], size: number) => {
-  return arr.reduce<T[][]>((acc, _, i) => {
-    if (i % size === 0) {
-      acc.push([]);
-    }
-
-    acc[acc.length - 1].push(arr[i]);
-
-    return acc;
-  }, []);
-};
