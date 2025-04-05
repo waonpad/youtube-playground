@@ -32,7 +32,7 @@ export const rateAllVideos = async (
   try {
     for (const id of notRatedVideoIds) {
       try {
-        await youtube.videos.rate({ id: "あ", rating });
+        await youtube.videos.rate({ id, rating });
       } catch (e) {
         if (e instanceof Common.GaxiosError) {
           // 型をつける
