@@ -45,3 +45,9 @@ YOUTUBE_DATA_API_REFRESH_TOKEN=
 > - アプリケーションのステータスが「テスト中」であり、同意画面が外部ユーザータイプ用に設定されているため、トークンは 7 日後に期限切れになります。
 >
 > [googleapis/google-api-nodejs-client](https://github.com/googleapis/google-api-nodejs-client?tab=readme-ov-file#handling-refresh-tokens)
+
+### GitHub Actionsを使用するための設定
+
+#### 権限の付与
+
+<リポジトリURL>/settings/actions にアクセスして`Workflow permissions`を`Read and write permissions`に変更する
