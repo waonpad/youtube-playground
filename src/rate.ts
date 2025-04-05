@@ -76,7 +76,7 @@ export const rateAllVideos = async (
           auth: process.env.GITHUB_TOKEN,
         });
 
-        octokit.rest.issues.create({
+        await octokit.rest.issues.create({
           // biome-ignore lint/style/noNonNullAssertion: <explanation>
           owner: process.env.GITHUB_REPOSITORY!.split("/")[0],
           // biome-ignore lint/style/noNonNullAssertion: <explanation>
