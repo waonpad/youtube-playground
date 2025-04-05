@@ -65,7 +65,10 @@ export const rateAllVideos = async (
     }
   }
 
+  const newRatedVideoIds = notRatedVideoIds.filter((id) => !ratingDisabledVideoIds.includes(id));
+
   return {
-    newRatedVideoIds: notRatedVideoIds,
+    newRatedVideoIds,
+    ratingDisabledVideoIds,
   };
 };
