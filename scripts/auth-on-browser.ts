@@ -13,11 +13,13 @@ export const authenticate = async ({ scope }: { scope: string[] }) => {
   const oauth2Client = getOAuth2Client();
 
   // 認証URLを生成
+  // https://developers.google.com/youtube/v3/guides/auth/server-side-web-apps?hl=ja#creatingclient
   const authorizeUrl = oauth2Client.generateAuthUrl({
     access_type: "offline",
     scope,
     // https://github.com/googleapis/google-api-nodejs-client/issues/750#issuecomment-368873635
     prompt: "consent",
+    include_granted_scopes: true,
   });
 
   // 認証後のコールバックURLを開くためのサーバーを作成
