@@ -16,6 +16,8 @@ export const authenticate = async ({ scope }: { scope: string[] }) => {
   const authorizeUrl = oauth2Client.generateAuthUrl({
     access_type: "offline",
     scope,
+    // https://github.com/googleapis/google-api-nodejs-client/issues/750#issuecomment-368873635
+    prompt: "consent",
   });
 
   // 認証後のコールバックURLを開くためのサーバーを作成
@@ -43,7 +45,7 @@ export const authenticate = async ({ scope }: { scope: string[] }) => {
         // biome-ignore lint/style/noNonNullAssertion: <explanation>
         const code = qs.get("code")!;
 
-        const { tokens } = await oauth2Client.getToken(code);
+        const { tokens } = await oauth2Client.getToken({ code });
 
         oauth2Client.setCredentials(tokens);
 
