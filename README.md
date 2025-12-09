@@ -31,7 +31,7 @@ bun run scripts/auth-on-browser.ts youtube
 
 表示されたリフレッシュトークンを`.env`に設定する
 
-OAuth consent screenのPublishing statusをProductionにするとリフレッシュトークンの期限がほぼ無限になる
+[OAuth consent screenのPublishing statusをProductionにする](https://console.cloud.google.com/auth/audience)とリフレッシュトークンの期限がほぼ無限になる
 
 ```env
 YOUTUBE_DATA_API_REFRESH_TOKEN=
