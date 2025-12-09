@@ -1,5 +1,22 @@
 {
   "name": "youtube-playground",
+  "type": "module",
+  "scripts": {
+    "prepare": "lefthook install",
+    "setup": "bun install && cp -n .env.example .env; exit 0",
+    "format": "biome format --write .",
+    "lint": "biome lint --write .",
+    "check": "biome check --write .",
+    "test": "vitest run",
+    "test:w": "vitest watch --silent",
+    "test:ci": "vitest run --silent",
+    "build": "tsc -p tsconfig.build.json"
+  },
+  "dependencies": {
+    "@octokit/rest": "^21.1.1",
+    "googleapis": "^167.0.0",
+    "ytmusic-api": "^5.3.0"
+  },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@types/bun": "^1.2.3",
@@ -9,22 +26,5 @@
     "server-destroy": "^1.0.1",
     "typescript": "^5.7.3",
     "vitest": "^3.0.6"
-  },
-  "scripts": {
-    "prepare": "lefthook install",
-    "setup": "bun install && cp -n .env.example .env; exit 0",
-    "fmt": "biome format --write .",
-    "lnt": "biome lint --write .",
-    "che": "biome check --write .",
-    "test": "vitest run",
-    "test:w": "vitest watch --silent",
-    "test:ci": "vitest run --silent",
-    "build": "tsc -p tsconfig.build.json"
-  },
-  "type": "module",
-  "dependencies": {
-    "@octokit/rest": "^21.1.1",
-    "googleapis": "^167.0.0",
-    "ytmusic-api": "^5.3.0"
   }
 }
