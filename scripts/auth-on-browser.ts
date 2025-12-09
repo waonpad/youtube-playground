@@ -33,6 +33,7 @@ export const authenticate = async ({ scope }: { scope: string[] }) => {
     // 初回りクエスト後、サーバーを停止する
     server.on("request", async (req, res) => {
       try {
+        res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
         res.end("認証が完了しました。この画面を閉じてください。");
         server.destroy();
 
