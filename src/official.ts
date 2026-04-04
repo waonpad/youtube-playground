@@ -76,15 +76,13 @@ export const isOfficialVideo = async (
  * @param title 動画タイトル
  */
 export const isOfficialVideoTitle = (title: string): boolean => {
-  return (
-    title.includes("Official") ||
-    title.includes("official") ||
-    title.includes("OFFICIAL") ||
-    title.includes("Music Video") ||
-    title.includes("music video") ||
-    title.includes("MUSIC VIDEO") ||
-    (title.includes("公式") && !title.includes("非公式"))
-  );
+  const lowerTitle = title.toLowerCase();
+
+  if (lowerTitle.includes("非公式")) {
+    return false;
+  }
+
+  return ["official", "music video", "公式"].some((keyword) => lowerTitle.includes(keyword));
 };
 
 /**
@@ -96,14 +94,17 @@ export const isOfficialVideoTitle = (title: string): boolean => {
  * @param channelTitle チャンネル名
  */
 export const isOfficialChannelTitle = (channelTitle: string): boolean => {
-  return (
-    channelTitle.includes("Official") ||
-    channelTitle.includes("official") ||
-    channelTitle.includes("OFFICIAL") ||
-    channelTitle.includes("オフィシャル") ||
-    (channelTitle.includes("公式") && !channelTitle.includes("非公式")) ||
-    channelTitle.endsWith(" - Topic")
-  );
+  const lowerChannelTitle = channelTitle.toLowerCase();
+
+  if (lowerChannelTitle.includes("非公式")) {
+    return false;
+  }
+
+  if (channelTitle.endsWith(" - Topic")) {
+    return true;
+  }
+
+  return ["official", "オフィシャル", "公式"].some((keyword) => lowerChannelTitle.includes(keyword));
 };
 
 /**
