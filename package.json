@@ -7,9 +7,6 @@
     "format": "biome format --write .",
     "lint": "biome lint --write .",
     "check": "biome check --write .",
-    "test": "vitest run",
-    "test:w": "vitest watch --silent",
-    "test:ci": "vitest run --silent",
     "build": "tsc -p tsconfig.build.json"
   },
   "dependencies": {
@@ -25,7 +22,6 @@
     "lefthook": "^2.0.9",
     "open": "^11.0.0",
     "server-destroy": "^1.0.1",
-    "typescript": "^5.9.3",
-    "vitest": "^4.0.15"
+    "typescript": "^5.9.3"
   }
 }
