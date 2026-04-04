@@ -1,7 +1,7 @@
 import { createServer } from "node:http";
-import { type OAuth2ClientType, getOAuth2Client } from "@/auth";
 import open from "open";
 import enableDestroy from "server-destroy";
+import { getOAuth2Client, type OAuth2ClientType } from "@/auth";
 
 /**
  * 最初の認証を行うための関数
@@ -41,10 +41,10 @@ export const authenticate = async ({ scope }: { scope: string[] }) => {
         res.end("認証が完了しました。この画面を閉じてください。");
         server.destroy();
 
-        // biome-ignore lint/style/noNonNullAssertion: <explanation>
+        // biome-ignore lint/style/noNonNullAssertion: リクエストURLは必ず存在するはずなので非nullアサーションを使用
         const qs = new URL(req.url!, "http://localhost:3000").searchParams;
 
-        // biome-ignore lint/style/noNonNullAssertion: <explanation>
+        // biome-ignore lint/style/noNonNullAssertion: 認証コードは必ず存在するはずなので非nullアサーションを使用
         const code = qs.get("code")!;
 
         const { tokens } = await oauth2Client.getToken({ code });

@@ -15,6 +15,6 @@ export const getWorkflowRunUrl = () => {
     throw new Error("This function can only be run in GitHub Actions");
   }
 
-  // biome-ignore lint/style/noNonNullAssertion: <explanation>
+  // biome-ignore lint/style/noNonNullAssertion: GitHub Actions上で実行されている場合、これらの環境変数は必ず存在するはずなので非nullアサーションを使用
   return `${process.env.GITHUB_SERVER_URL!}/${process.env.GITHUB_REPOSITORY!}/actions/runs/${process.env.GITHUB_RUN_ID!}` as const;
 };

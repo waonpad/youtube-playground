@@ -1,0 +1,70 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "lineWidth": 120
+  },
+  "linter": {
+    "enabled": true,
+    // https://biomejs.dev/guides/upgrade-to-biome-v2/#the-option-all-is-removed-from-the-linter
+    // 可能な限り多くのルールを適用しておく
+    "domains": {
+      "next": "all",
+      "react": "all",
+      "test": "all",
+      "project": "all"
+    },
+    "rules": {
+      "recommended": true,
+      "correctness": {
+        "noNodejsModules": "off",
+        "useImportExtensions": "off",
+        // https://biomejs.dev/linter/rules/use-component-export-only-modules/
+        // 許可リストの作成が面倒なので無効化
+        "noUndeclaredDependencies": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
+      },
+      "style": {
+        "noDefaultExport": "off",
+        "useNamingConvention": "off",
+        "useComponentExportOnlyModules": "off"
+      },
+      "suspicious": {
+        "noConsole": "off",
+        "noReactSpecificProps": "off"
+      },
+      "nursery": {
+        "useSortedClasses": {
+          "fix": "safe",
+          "level": "error",
+          "options": {}
+        }
+      }
+    }
+  },
+  "files": {
+    "includes": ["**", "!**/node_modules", "!**/.next", "!**/out"]
+  },
+  "overrides": [
+    // https://biomejs.dev/ja/internals/language-support/#jsonc%E3%82%B5%E3%83%9D%E3%83%BC%E3%83%88
+    {
+      "includes": [".vscode/*.json"],
+      "json": {
+        "parser": {
+          "allowComments": true,
+          "allowTrailingCommas": true
+        }
+      }
+    }
+  ]
+}

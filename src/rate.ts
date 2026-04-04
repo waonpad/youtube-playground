@@ -28,7 +28,7 @@ export const rateAllVideos = async (
   // 対象の評価と異なる評価の動画IDを取得する
   const notRatedVideoIds = currentRates
     .filter((rate) => rate.rating !== rating)
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
+    // biome-ignore lint/style/noNonNullAssertion: 動画IDは必ず存在するはずなので非nullアサーションを使用
     .map((rate) => rate.videoId!);
 
   const ratingDisabledVideoIds: string[] = [];
@@ -80,9 +80,9 @@ export const rateAllVideos = async (
         });
 
         await octokit.rest.issues.create({
-          // biome-ignore lint/style/noNonNullAssertion: <explanation>
+          // biome-ignore lint/style/noNonNullAssertion: GitHub Actions上で実行されている場合、これらの環境変数は必ず存在するはずなので非nullアサーションを使用
           owner: process.env.GITHUB_REPOSITORY!.split("/")[0],
-          // biome-ignore lint/style/noNonNullAssertion: <explanation>
+          // biome-ignore lint/style/noNonNullAssertion: GitHub Actions上で実行されている場合、これらの環境変数は必ず存在するはずなので非nullアサーションを使用
           repo: process.env.GITHUB_REPOSITORY!.split("/")[1],
           title: "手動での評価が必要な動画が検出されました",
           body: `実行URL: ${getWorkflowRunUrl()}\n\n評価が無効な動画ID: ${ratingDisabledVideoIds.join(", ")}\n\n以下のリンクから手動で評価を行ってください。\n\n${ratingDisabledVideoPlaylistUrls.join("\n")}`,

@@ -1,8 +1,8 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";
+import type { youtube_v3 } from "googleapis";
 import { getAllPlaylistItems } from "@/playlist-items";
 import { setupYoutube } from "@/youtube";
-import type { youtube_v3 } from "googleapis";
 
 const main = async () => {
   const args = (() => {
@@ -70,8 +70,8 @@ const main = async () => {
 
     const videoIds = pItems
       .filter((item) => item.contentDetails?.videoPublishedAt)
-      // biome-ignore lint/style/noNonNullAssertion: <explanation>
-      .map((item) => item.contentDetails?.videoId!);
+      // biome-ignore lint/style/noNonNullAssertion: 動画IDは必ず存在するはずなので非nullアサーションを使用
+      .map((item) => item.contentDetails!.videoId!);
 
     console.log("プレイリスト内の動画数: ", pItems.length);
     console.log("削除または非公開の動画数: ", pItems.length - videoIds.length);

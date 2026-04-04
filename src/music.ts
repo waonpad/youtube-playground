@@ -1,7 +1,6 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-
-import type { ArtistFull, SongFull } from "ytmusic-api";
 import type YTMusic from "ytmusic-api";
+import type { ArtistFull, SongFull } from "ytmusic-api";
 
 const dir = "data/songs";
 const filepath = `${dir}/songs.json`;

@@ -1,4 +1,3 @@
-import {} from "node:fs";
 import { parseArgs } from "node:util";
 import { rateAllVideos } from "@/rate";
 import { setupYoutube } from "@/youtube";
