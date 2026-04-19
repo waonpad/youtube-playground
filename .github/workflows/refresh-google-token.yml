@@ -3,15 +3,16 @@ name: Refresh Google OAuth Token
 on:
   workflow_dispatch:
   schedule:
-    # 毎週日曜日の日本時間9時に実行 (UTC 0時)
-    # Google OAuth テストアプリのリフレッシュトークンは7日で失効するため週次で更新する
-    - cron: '0 0 * * 0'
+    # 5日ごとに実行
+    # Google OAuth テストアプリのリフレッシュトークンは有効期限に余裕を持たせて更新
+    - cron: "0 0 */5 * *"
 
 jobs:
   refresh_token:
     runs-on: ubuntu-latest
     # スケジュール実行またはリポジトリオーナーの手動実行のみ許可
-    if: github.event_name == 'schedule' || github.triggering_actor == github.repository_owner
+    if: github.event_name == 'schedule' || github.triggering_actor ==
+      github.repository_owner
     environment: main
     steps:
       - name: Checkout main
